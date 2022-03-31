@@ -2,18 +2,30 @@ body {
     background-color: #FFFFFF;
 }
 
-.box {
+.box_summer {
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #FFE3C6;
   margin: 10px;
   padding: 15px;
-  box-shadow: 2px 2px 2px lightgrey;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+.box_winter {
+  border-radius: 5px;
+  background-color: #E9F7FF;
+  margin: 10px;
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+h2, h3, h4, h5, h6 {
   text-align: center;
   background-color: #f9f9f9;
 }
+
+.h1 { color: #ffffff;
+    font-family: 'Raleway',
+    sans-serif; font-size: 62px; font-weight: 800; line-height: 72px; margin: 0 0 24px; text-align: center; text-transform: uppercase; }
 
 .examples {
     left: 0%;
@@ -24,7 +36,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 100%;
 }
 
-button {
+.button {
   display: inline-block;
   height: 38px;
   padding: 0 30px;
