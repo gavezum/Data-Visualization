@@ -1,0 +1,207 @@
+,NOC,Summer_presences,Winter_presences,country_x
+0,AFG,14,,Afghanistan
+1,AHO,13,2.0,Curacao
+2,ALB,8,3.0,Albania
+3,ALG,13,3.0,Algeria
+4,AND,11,11.0,Andorra
+5,ANG,9,,Angola
+6,ANT,10,,Antigua
+7,ARG,24,18.0,Argentina
+8,ARM,6,6.0,Armenia
+9,ARU,8,,Aruba
+10,ASA,8,1.0,American Samoa
+11,AUS,29,19.0,Australia
+12,AUT,28,22.0,Austria
+13,AZE,6,5.0,Azerbaijan
+14,BAH,16,,Bahamas
+15,BAN,9,,Bangladesh
+16,BAR,12,,Barbados
+17,BDI,6,,Burundi
+18,BEL,27,20.0,Belgium
+19,BEN,11,,Benin
+20,BER,18,7.0,Bermuda
+21,BHU,9,,Bhutan
+22,BIH,7,6.0,Bosnia and Herzegovina
+23,BIZ,12,,Belize
+24,BLR,6,6.0,Belarus
+25,BOL,14,5.0,Bolivia
+26,BOT,10,,Botswana
+27,BRA,23,7.0,Brazil
+28,BRN,9,,Bahrain
+29,BRU,5,,Brunei
+30,BUL,19,19.0,Bulgaria
+31,BUR,9,,Burkina Faso
+32,CAF,10,,Central African Republic
+33,CAM,9,,Cambodia
+34,CAN,27,22.0,Canada
+35,CAY,10,2.0,Cayman Islands
+36,CGO,12,,Republic of Congo
+37,CHA,12,,Chad
+38,CHI,22,16.0,Chile
+39,CHN,13,10.0,China
+40,CIV,13,,Ivory Coast
+41,CMR,14,1.0,Cameroon
+42,COD,10,,Democratic Republic of the Congo
+43,COK,8,,Cook Islands
+44,COL,20,1.0,Colombia
+45,COM,6,,Comoros
+46,CPV,6,,Cape Verde
+47,CRC,15,6.0,Costa Rica
+48,CRO,7,7.0,Croatia
+49,CUB,20,,Cuba
+50,CYP,10,10.0,Cyprus
+51,CZE,26,22.0,Czech Republic
+52,DEN,28,13.0,Denmark
+53,DJI,8,,Djibouti
+54,DMA,6,1.0,Dominica
+55,DOM,14,,Dominican Republic
+56,ECU,14,,Ecuador
+57,EGY,21,1.0,Egypt
+58,ERI,5,,Eritrea
+59,ESA,11,,El Salvador
+60,ESP,23,19.0,Spain
+61,EST,12,9.0,Estonia
+62,ETH,13,2.0,Ethiopia
+63,FIJ,14,3.0,Fiji
+64,FIN,26,22.0,Finland
+65,FRA,29,22.0,France
+66,FSM,5,,Micronesia
+67,GAB,10,,Gabon
+68,GAM,9,,Gambia
+69,GBR,29,22.0,UK
+70,GBS,6,,Guinea-Bissau
+71,GEO,6,6.0,Georgia
+72,GEQ,9,,Equatorial Guinea
+73,GER,25,20.0,Germany
+74,GHA,14,1.0,Ghana
+75,GRE,29,18.0,Greece
+76,GRN,9,,Grenada
+77,GUA,14,1.0,Guatemala
+78,GUI,11,,Guinea
+79,GUM,8,1.0,Guam
+80,GUY,17,,Guyana
+81,HAI,16,,Haiti
+82,HKG,16,,Hong Kong
+83,HON,11,1.0,Honduras
+84,HUN,27,22.0,Hungary
+85,INA,15,,Indonesia
+86,IND,24,10.0,India
+87,IRI,17,10.0,Iran
+88,IRL,21,6.0,Ireland
+89,IRQ,14,,Iraq
+90,ISL,21,17.0,Iceland
+91,ISR,16,6.0,Israel
+92,ISV,12,6.0,"Virgin Islands, US"
+93,ITA,29,22.0,Italy
+94,IVB,9,2.0,"Virgin Islands, British"
+95,JAM,17,7.0,Jamaica
+96,JOR,10,,Jordan
+97,JPN,22,20.0,Japan
+98,KAZ,6,6.0,Kazakhstan
+99,KEN,14,3.0,Kenya
+100,KGZ,6,6.0,Kyrgyzstan
+101,KIR,4,,Kiribati
+102,KOR,17,17.0,South Korea
+103,KOS,1,,Kosovo
+104,KSA,11,,Saudi Arabia
+105,KUW,12,,Kuwait
+106,LAO,9,,Laos
+107,LAT,11,10.0,Latvia
+108,LBA,10,,Libya
+109,LBR,12,,Liberia
+110,LCA,6,,Saint Lucia
+111,LES,11,,Lesotho
+112,LIB,17,16.0,Lebanon
+113,LIE,17,18.0,Liechtenstein
+114,LTU,9,8.0,Lithuania
+115,LUX,24,8.0,Luxembourg
+116,MAD,12,1.0,Madagascar
+117,MAR,14,6.0,Morocco
+118,MAS,15,,Malaysia
+119,MAW,10,,Malawi
+120,MDA,6,6.0,Moldova
+121,MDV,8,,Maldives
+122,MEX,23,8.0,Mexico
+123,MGL,13,13.0,Mongolia
+124,MHL,3,,Marshall Islands
+125,MKD,6,5.0,Macedonia
+126,MLI,13,,Mali
+127,MLT,16,1.0,Malta
+128,MNE,3,2.0,Montenegro
+129,MON,20,9.0,Monaco
+130,MOZ,10,,Mozambique
+131,MRI,9,,Mauritius
+132,MTN,9,,Mauritania
+133,MYA,17,,Myanmar
+134,NAM,7,,Namibia
+135,NCA,12,,Nicaragua
+136,NED,27,20.0,Netherlands
+137,NEP,13,5.0,Nepal
+138,NGR,16,,Nigeria
+139,NIG,12,,Niger
+140,NOR,27,22.0,Norway
+141,NRU,6,,Nauru
+142,NZL,24,15.0,New Zealand
+143,OMA,9,,Oman
+144,PAK,17,2.0,Pakistan
+145,PAN,17,,Panama
+146,PAR,12,1.0,Paraguay
+147,PER,19,2.0,Peru
+148,PHI,21,4.0,Philippines
+149,PLE,6,,Palestine
+150,PLW,5,,Palau
+151,PNG,10,,Papua New Guinea
+152,POL,21,22.0,Poland
+153,POR,24,7.0,Portugal
+154,PRK,10,8.0,North Korea
+155,PUR,18,5.0,Puerto Rico
+156,QAT,9,,Qatar
+157,ROU,21,20.0,Romania
+158,RSA,19,6.0,South Africa
+159,RUS,19,16.0,Russia
+160,RWA,9,,Rwanda
+161,SAM,9,,Samoa
+162,SEN,14,5.0,Senegal
+163,SEY,9,,Seychelles
+164,SKN,6,,Saint Kitts
+165,SLE,11,,Sierra Leone
+166,SLO,7,7.0,Slovenia
+167,SMR,14,9.0,San Marino
+168,SOL,9,,Solomon Islands
+169,SOM,9,,Somalia
+170,SRB,23,19.0,Serbia
+171,SRI,17,,Sri Lanka
+172,SSD,1,,South Sudan
+173,STP,6,,Sao Tome and Principe
+174,SUD,12,,Sudan
+175,SUI,29,22.0,Switzerland
+176,SUR,12,,Suriname
+177,SVK,6,6.0,Slovakia
+178,SWE,28,22.0,Sweden
+179,SWZ,10,1.0,Swaziland
+180,SYR,14,,Syria
+181,TAN,13,,Tanzania
+182,TGA,9,1.0,Tonga
+183,THA,16,3.0,Thailand
+184,TJK,6,4.0,Tajikistan
+185,TKM,6,,Turkmenistan
+186,TLS,4,1.0,Timor-Leste
+187,TOG,10,1.0,Togo
+188,TPE,14,11.0,Taiwan
+189,TTO,18,3.0,Trinidad
+190,TUN,14,,Tunisia
+191,TUR,22,16.0,Turkey
+192,TUV,3,,Tuvalu
+193,UAE,9,,United Arab Emirates
+194,UGA,15,,Uganda
+195,UKR,6,6.0,Ukraine
+196,URU,21,1.0,Uruguay
+197,USA,28,22.0,USA
+198,UZB,6,6.0,Uzbekistan
+199,VAN,8,,Vanuatu
+200,VEN,18,4.0,Venezuela
+201,VIE,15,,Vietnam
+202,VIN,8,,Saint Vincent
+203,YEM,10,,Yemen
+204,ZAM,13,,Zambia
+205,ZIM,13,1.0,Zimbabwe
