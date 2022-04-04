@@ -9,6 +9,7 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+import dash_bootstrap_components as dbc
 
 
 data = pd.read_csv('athlete_events.csv')
@@ -37,7 +38,7 @@ stat_options = dcc.Dropdown(
              dict(label='Age',value='Age')],
     value='Weight'
 )
-sex_options = dcc.RadioItems(
+sex_options = dbc.RadioItems(
     id='sex_radio',
     options=[dict(label='Male' , value='M'),
              dict(label='Female' , value='F')],
@@ -46,6 +47,7 @@ sex_options = dcc.RadioItems(
 
 season_options = dcc.RadioItems(
     id='season_radio',
+    className='radio',
     options=[dict(label='Summer', value='Summer'),
              dict(label='Winter', value='Winter')],
     value='Summer')
@@ -81,9 +83,9 @@ app.layout = html.Div([
                   ],id='Logo',style={'width': '20%'}),
         html.Div([html.Label('Evolution of the Olympics')
                   ],className='h1',id='Title',style={'width': '60%'}),
-        html.Div([season_options
-                  ],className='button',id='winter_summer',style={'width': '20%'})
-             ],id='1_div',style={'display': 'flex','height':'10%'}),
+        html.Div([html.Br(), html.Br(), season_options
+                  ],id='winter_summer',style={'width': '20%'})
+             ],id='1_div',style={'display': 'flex','height':'8%'}),
     html.Div([
         html.Div([
             html.Label('Choose a variable:'),
@@ -121,10 +123,26 @@ app.layout = html.Div([
                   html.Div([html.Label('Choose a Statistic:'),
                             stat_options], style={'width': '30%', 'display': 'inline-block'})
                   ],id='Button',style={'height': '15%','display': 'flex',}),
-        html.Div([dcc.Graph(id = 'parallel_graph')
-                  ],id='Paralel',style={'height': '85%','display': 'inline-block'})
-            ],id='4_div',style={'height':'30%'})
+        html.Div([
+                  html.Div([dcc.Graph(id = 'parallel_graph')],style={'width': '88%', 'display': 'inline-block'} ),
+                  html.Div([html.Br(),
+                            html.Br(),
+                            html.Br(),
+                            html.Br(),
+                            html.Label('The vertical lines are the mean of the statistic in the decade and the horizontal line shows the evolution of each event along the time.')
+                            ],style={'width': '12%', 'display': 'inline-block'} )
+                  ],id='Paralel',style={'display': 'flex','height': '85%'})
+            ],id='4_div',style={'height':'30%'}),
 
+    html.Div([
+        html.Div([html.P(['Group 6', html.Br(),'Danilo Arfelli (20211296), Diogo Tomás Peixoto (20210993), Gabriel Avezum (20210663), João Morais Costa(20211005)'], style={'font-size':'12px'})
+                  ],style={'width': '60%'}),
+        html.Div([
+            html.P(['Sources:', html.Br(),
+                    html.A('Olympic games history', href='https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results', target='_blank')], style={'font-size': '12px'})
+        ], style={'width': '40%'}),
+
+            ],id='5_div',style={'display': 'flex','height':'2%'})
     ],id= 'Main_Div')
 
 @app.callback(
@@ -148,9 +166,9 @@ def events(season):
      Output('4_div', 'className'),
      Output('Map', 'className'),
      Output('Barplot', 'className'),
-     Output('line_plot', 'className'),
+     Output('2_div', 'className'),
      Output('comment', 'className'),
-     Output('filter', 'className')],
+     Output('5_div', 'className')],
     [Input('season_radio', 'value')]
 )
 def background(season):
@@ -209,7 +227,7 @@ def callback_1(stat, sex,season,sports):
              dimensions=dimension   ) )
     fig.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',width=1800, height=400,margin=dict(l=400, r=60, t=60, b=40)
+        plot_bgcolor='rgba(0,0,0,0)',width=1300, height=400,margin=dict(l=400, r=60, t=60, b=40)
     )
 
     return fig
