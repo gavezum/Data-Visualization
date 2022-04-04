@@ -11,10 +11,10 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 import dash_bootstrap_components as dbc
 
-#path = 'https://raw.githubusercontent.com/gavezum/Data-Visualization/main/data/'
+path = 'https://raw.githubusercontent.com/gavezum/Data-Visualization/main/data/'
 
-data = pd.read_csv('athlete_events.csv')
-total_presence = pd.read_csv('total_presence.csv')
+data = pd.read_csv(path+'athlete_events.csv')
+total_presence = pd.read_csv(path+'total_presence.csv')
 ## Parte Danilo
 
 data["City Games"] = np.where((data["Season"] == "Summer") & (data["Year"] == 1956), "Melbourne", data["City"])
