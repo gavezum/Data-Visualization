@@ -103,7 +103,7 @@ app.layout = html.Div([
                            style={'width': '100%', 'position': 'relative', 'opacity': '80%'})
                   ], id='Logo', style={'width': '20%'}),
         html.Div([html.Label('Evolution of the Olympics')
-                  ], className='h1', id='Title', style={'width': '60%'}),
+                  ],  id='Title', style={'width': '60%'}),
         html.Div([html.Br(), html.Br(), season_options
                   ], id='winter_summer', style={'width': '20%'})
     ], id='1_div', style={'display': 'flex', 'height': '8%'}),
@@ -130,28 +130,34 @@ app.layout = html.Div([
                   ], className='h2',style={'height':'5%'}),
 
             html.Div([dcc.Graph(id='stackedbarchart',style={'height':'100%'}),
-            ],style={'height':'70%'}),
+            ],style={'height':'65%'}),
 
             html.Div([slider_year
             ],style={'height':'10%'}),
 
-            html.Div([html.Label('''The graph displays the cumulative country podiums along the olympics history. The criteria to decide the podium on each olympics event has been based 
+            html.Div([html.Br(),
+                html.Label('''The graph displays the cumulative country podiums along the olympics history. The criteria to decide the podium on each olympics event has been based 
                                  solely on the number of gold medals won. \n
                                  As reference, looking at the summer olympics 2016, USA has won 17 times, been second 8 times and third 3 times, based on the 
                                  criteria referred and considering all the summer olympics disputed until the one mentioned.'''),
-            ],style={'height':'15%'}),
+            ],style={'height':'20%'}),
         ],id='Barplot',style={'width': '50%', 'display': 'inline-block'}),
 
         html.Div([
-            drop_continent,
-            html.Br(),
-            html.Br(),
+            html.Div([
+                html.Div([
+                    html.Br(),
+                    html.Label(id='title_map',className='h3', style={'front-size': 'medium'}),
+                ], style={'width': '80%'}),
+                html.Div([
+                    drop_continent,
+                    html.Br(),
+                ], style={'width': '20%'}),
+            ], className='row', style={'display': 'flex'}),
             dcc.Graph(
-                id='graph'
-                # style={'width': '1200px', 'height': '700px', 'margin': 'auto'}
-                     )
-                ], id='Map', style={'width': '50%', 'display': 'inline-block'})
-            ], id='3_div', style={'display': 'flex', 'height': '30%'}),
+                id='graph')
+        ], id='Map', style={'width': '50%', 'display': 'inline-block'})
+    ], id='3_div', style={'display': 'flex', 'height': '30%'}),
 
     html.Div([
         html.Div([html.Div([html.Label('Choose a Sex:'),
@@ -167,10 +173,11 @@ app.layout = html.Div([
                             html.Br(),
                             html.Br(),
                             html.Br(),
-                            html.Label('The vertical lines are the mean of the statistic in the decade and the horizontal line shows the evolution of each event along the time.')
+                            html.Label('''The vertical lines are the mean of the statistic in the decade and the horizontal line shows the evolution of each event along the time.
+                                           When a sports do not has an appearance the line will go down and disappear and only return when the event happen''')
                             ],style={'width': '12%', 'display': 'inline-block'} )
                   ],id='Paralel',style={'display': 'flex','height': '85%'})
-            ],id='4_div',style={'height':'30%'}),
+            ],id='4_div',style={'height':'25%'}),
 
     html.Div([
         html.Div([html.P(['Group 6', html.Br(),'Danilo Arfelli (20211296), Diogo Tomás Peixoto (20210993), Gabriel Avezum (20210663), João Morais Costa(20211005)'], style={'font-size':'12px'})
@@ -202,7 +209,7 @@ def events(season):
     return events_options, [events_options[0]['value']]
 
 @app.callback(
-    [Output('Main_Div', 'style'),
+    [Output('Title', 'className'),
      Output('4_div', 'className'),
      Output('Map', 'className'),
      Output('Barplot', 'className'),
@@ -213,13 +220,13 @@ def events(season):
 )
 def background(season):
     if season =='Summer':
-        background = {'backgroundColor': '#FFCA94'}
+        title = 'h1_summer'
         class_name = 'box_summer'
     elif season=='Winter':
-        background = {'backgroundColor': '#dbe8ff'}
+        title = 'h1_winter'
         class_name = 'box_winter'
 
-    return background, class_name, class_name, class_name, class_name, class_name, class_name
+    return title, class_name, class_name, class_name, class_name, class_name, class_name
 
 ## Gráfico Gabriel
 
@@ -239,8 +246,8 @@ def callback_1(stat, sex,season,sports):
     first = first.loc[first['Sport'].isin(sports)]
     first['dec'] = first['Year'].map(lambda x: str(x)).str.slice(start=0, stop=3)
 
-    min_val = first.groupby(by=['Sport', 'Event', 'dec'])[stat].mean().min()
-    max_val = first.groupby(by=['Sport', 'Event', 'dec'])[stat].mean().max()
+    min_val = round(first.groupby(by=['Sport', 'Event', 'dec'])[stat].mean().min(),2)
+    max_val = round(first.groupby(by=['Sport', 'Event', 'dec'])[stat].mean().max(),2)
     data_group = first.groupby(by=['Sport', 'Event', 'dec'])[stat].mean().unstack().reset_index()
     data_group.fillna(0, inplace=True)
     data_group = data_group.sort_values(by=data_group.columns[2]).reset_index(drop=True)
@@ -254,7 +261,7 @@ def callback_1(stat, sex,season,sports):
                            label='Events',
                            values=pd.Series(list(data_group['Event'].index)))])
     for i in data_group.columns[2:-1]:
-        dimension.append(dict(range=[min_val - 5, max_val + 5], label=i + '0', values=data_group[i]))
+        dimension.append(dict(range=[min_val-5,max_val+5],label=i + '0', values=data_group[i]))
     if season == 'Summer':
         fig = go.Figure(data=
         go.Parcoords(
@@ -400,11 +407,14 @@ def update_graph(year,season):
 ## Gráfico João
 
 @app.callback(
-        Output('graph', 'figure'),
+        [Output('graph', 'figure'),
+         Output('title_map', 'children')],
         [Input('season_radio','value'),
          Input('drop_continent', 'value')])
 
 def build_graph(value,drop_continent):
+    title = 'Number of ' + str(value) + ' Olympic presences per country'
+
     if value == 'Summer':
         data_choropleth = dict(type='choropleth',
                        locations=total_presence['country_x'],
@@ -431,16 +441,16 @@ def build_graph(value,drop_continent):
                                   oceancolor='white'
                                   ),
 
-                         title=dict(text='Number of Summer Olympic Presences per Country',
-                                    x=.5  # Title relative position according to the xaxis, range (0,1)
-                                    )
+                         #title=dict(text='Number of Summer Olympic Presences per Country',
+                                   # x=.5  # Title relative position according to the xaxis, range (0,1)
+                                   # )
                          )
         fig_choropleth = go.Figure(data=data_choropleth, layout=layout_choropleth)
         fig_choropleth.update_geos(showcoastlines=False, showsubunits=False, showframe=False)
         fig_choropleth.update_layout(
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)' )
-        return fig_choropleth
+            plot_bgcolor='rgba(0,0,0,0)',width=700, height=400,margin=dict(l=0, r=0, t=0, b=0) )
+        return fig_choropleth, title
     else:
         data_choropleth2 = dict(type='choropleth',
                        locations=total_presence['country_x'],
@@ -465,16 +475,16 @@ def build_graph(value,drop_continent):
                                   oceancolor='white'
                                   ),
 
-                         title=dict(text='Number of winter Olympic Presences per Country',
-                                    x=.5
-                                    )
+                         #title=dict(text='Number of winter Olympic Presences per Country',
+                         #          x=.5
+                         #          )
                          )
         fig_choropleth2 = go.Figure(data=data_choropleth2, layout=layout_choropleth2)
         fig_choropleth2.update_geos(showcoastlines=False, showsubunits=False, showframe=False)
         fig_choropleth2.update_layout(
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)' )
-        return fig_choropleth2
+        return fig_choropleth2, title
 
 ## Gráfico Danilo
 
