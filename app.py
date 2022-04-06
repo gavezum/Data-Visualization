@@ -15,9 +15,18 @@ path = 'https://raw.githubusercontent.com/gavezum/Data-Visualization/main/data/'
 
 data = pd.read_csv(path+'athlete_events.csv')
 total_presence = pd.read_csv(path+'total_presence.csv')
+total_medals=pd.read_csv(path+'total_medals.csv')
+
 ## Parte Danilo
 
 data["City Games"] = np.where((data["Season"] == "Summer") & (data["Year"] == 1956), "Melbourne", data["City"])
+
+## Parte Tomas
+
+min_year_summer=total_medals.loc[total_medals['Season']=='Summer'].Year.min()
+min_year_winter=total_medals.loc[total_medals['Season']=='Winter'].Year.min()
+
+######################################################Interactive Components############################################
 
 var_options = [{'label': 'Number of Events', 'value': 'Event'},
                {'label': 'Number of Athletes', 'value': 'Name'},
@@ -30,8 +39,6 @@ var_dropdown = dcc.Dropdown(
     value='Name'
 )
 
-
-#########################
 stat_options = dcc.Dropdown(
     id='stat_drop',
     options=[dict(label='Weight',value='Weight'),
@@ -71,8 +78,19 @@ drop_continent = dcc.Dropdown(
         value='world',
         style= {'margin': '4px', 'box-shadow': '0px 0px #ebb36a', 'border-color': '#ebb36a'})
 
+slider_year = dcc.Slider(
+    id='year_slider',
+    min=total_medals['Year'].min(),  # min value in the range slider
+    max=total_medals['Year'].max(),  # max value in the range slider
+    step=30,
+    value=total_medals['Year'].min(),
+    marks={str(i): {'label': str(i),
+                    'style': {'writing-mode': 'vertical-lr', 'font-size': '15px'}} for i in total_medals.Year.unique()},
+    dots=False,
+)
 
-# The App itself
+
+##################################################APP###################################################################
 
 app = dash.Dash(__name__)
 
@@ -81,13 +99,15 @@ server = app.server
 app.layout = html.Div([
 
     html.Div([
-        html.Div([html.Img(src=app.get_asset_url('logo.png'), style={'width': '100%', 'position':'relative', 'opacity':'80%'})
-                  ],id='Logo',style={'width': '20%'}),
+        html.Div([html.Img(src=app.get_asset_url('logo.png'),
+                           style={'width': '100%', 'position': 'relative', 'opacity': '80%'})
+                  ], id='Logo', style={'width': '20%'}),
         html.Div([html.Label('Evolution of the Olympics')
-                  ],className='h1',id='Title',style={'width': '60%'}),
+                  ], className='h1', id='Title', style={'width': '60%'}),
         html.Div([html.Br(), html.Br(), season_options
-                  ],id='winter_summer',style={'width': '20%'})
-             ],id='1_div',style={'display': 'flex','height':'8%'}),
+                  ], id='winter_summer', style={'width': '20%'})
+    ], id='1_div', style={'display': 'flex', 'height': '8%'}),
+
     html.Div([
         html.Div([
             html.Label('Choose a variable:'),
@@ -105,8 +125,23 @@ app.layout = html.Div([
             ],id='2_div',style={'display': 'flex','height':'30%'}),
 
     html.Div([
-        html.Div([html.Label('DIV TOMAS')
-                  ], id='Barplot', style={'width': '50%', 'display': 'inline-block'}),
+        html.Div([
+            html.Div([html.Label('Countries with Most Medals Along History')
+                  ], className='h2',style={'height':'5%'}),
+
+            html.Div([dcc.Graph(id='stackedbarchart',style={'height':'100%'}),
+            ],style={'height':'70%'}),
+
+            html.Div([slider_year
+            ],style={'height':'10%'}),
+
+            html.Div([html.Label('''The graph displays the cumulative country podiums along the olympics history. The criteria to decide the podium on each olympics event has been based 
+                                 solely on the number of gold medals won. \n
+                                 As reference, looking at the summer olympics 2016, USA has won 17 times, been second 8 times and third 3 times, based on the 
+                                 criteria referred and considering all the summer olympics disputed until the one mentioned.'''),
+            ],style={'height':'15%'}),
+        ],id='Barplot',style={'width': '50%', 'display': 'inline-block'}),
+
         html.Div([
             drop_continent,
             html.Br(),
@@ -117,6 +152,7 @@ app.layout = html.Div([
                      )
                 ], id='Map', style={'width': '50%', 'display': 'inline-block'})
             ], id='3_div', style={'display': 'flex', 'height': '30%'}),
+
     html.Div([
         html.Div([html.Div([html.Label('Choose a Sex:'),
                             sex_options],style={'width': '10%', 'display': 'inline-block'}),
@@ -146,6 +182,8 @@ app.layout = html.Div([
 
             ],id='5_div',style={'display': 'flex','height':'2%'})
     ],id= 'Main_Div')
+
+######################################################Callbacks#########################################################
 
 @app.callback(
     [Output('event_drop', 'options'),
@@ -182,6 +220,8 @@ def background(season):
         class_name = 'box_winter'
 
     return background, class_name, class_name, class_name, class_name, class_name, class_name
+
+## Gráfico Gabriel
 
 @app.callback(
     Output('parallel_graph', 'figure'),
@@ -233,6 +273,131 @@ def callback_1(stat, sex,season,sports):
     )
 
     return fig
+
+
+
+
+
+
+
+## Gráfico Tomás
+
+@app.callback(
+    Output('stackedbarchart', 'figure'),
+    [Input('year_slider', 'value'),
+     Input('season_radio', 'value')]
+)
+
+def update_graph(year,season):
+    if ((year>=min_year_summer) and (season=='Summer')):
+        filtered_by_olympics_season = total_medals[(total_medals['Season'] == season)]
+        filtered_by_olympics_season_year = filtered_by_olympics_season[(filtered_by_olympics_season['Year'] <= year)]
+        filtered_by_olympics_season_year = filtered_by_olympics_season_year.groupby(['NOC','Podium']).count().reset_index()
+        filtered_by_olympics_season_year = pd.pivot_table(filtered_by_olympics_season_year, values='Medal', index=['NOC'],
+                             columns=['Podium'], aggfunc=np.sum, fill_value=0, margins=True)
+        filtered_by_olympics_season_year=filtered_by_olympics_season_year.sort_values(by=["All", 1.0, 2.0, 3.0], ascending=True).iloc[-11:-1,:]
+
+        x_bar_g = list(filtered_by_olympics_season_year[1.0].values)
+        y_bar_g = list(filtered_by_olympics_season_year.index)
+        x_bar_s = list(filtered_by_olympics_season_year[2.0].values)
+        y_bar_s = list(filtered_by_olympics_season_year.index)
+        x_bar_b = list(filtered_by_olympics_season_year[3.0].values)
+        y_bar_b = list(filtered_by_olympics_season_year.index)
+
+        data_gold = dict(type='bar', x=x_bar_g, y=y_bar_g, name='1st Place', marker=dict(color='yellow'), orientation='h')
+        data_silver = dict(type='bar', x=x_bar_s, y=y_bar_s, name='2nd Place ', marker=dict(color='gray'), orientation='h')
+        data_bronze = dict(type='bar', x=x_bar_b, y=y_bar_b, name='3rd Place', marker=dict(color='brown'), orientation='h')
+
+        data = [data_gold, data_silver, data_bronze]
+        bar_data = []
+
+        bar_data.append(data)
+
+        bar_layout = dict(xaxis=dict(title='Count'),
+                          yaxis=dict(title='NOC')
+                          )
+        fig = go.Figure(data=data, layout=bar_layout)
+
+        fig.update_traces(marker_line_width=1.0, opacity=1)
+        fig.update_layout(barmode='stack',legend={'traceorder':'normal'})
+        fig.update_xaxes(dtick=1)
+
+        return fig
+
+    elif((year >= min_year_winter) and (season == 'Winter')):
+        filtered_by_olympics_season=total_medals[(total_medals['Season'] == season)]
+        filtered_by_olympics_season_year =  filtered_by_olympics_season[( filtered_by_olympics_season['Year'] <= year)]
+        filtered_by_olympics_season_year = filtered_by_olympics_season_year.groupby(
+            ['NOC', 'Podium']).count().reset_index()
+        filtered_by_olympics_season_year = pd.pivot_table(filtered_by_olympics_season_year, values='Medal',
+                                                          index=['NOC'],
+                                                          columns=['Podium'], aggfunc=np.sum, fill_value=0,
+                                                          margins=True)
+        filtered_by_olympics_season_year = filtered_by_olympics_season_year.sort_values(by=["All", 1.0, 2.0, 3.0],
+                                                                                        ascending=True).iloc[-11:-1, :]
+
+        x_bar_g = list(filtered_by_olympics_season_year[1.0].values)
+        y_bar_g = list(filtered_by_olympics_season_year.index)
+        x_bar_s = list(filtered_by_olympics_season_year[2.0].values)
+        y_bar_s = list(filtered_by_olympics_season_year.index)
+        x_bar_b = list(filtered_by_olympics_season_year[3.0].values)
+        y_bar_b = list(filtered_by_olympics_season_year.index)
+
+        data_gold = dict(type='bar', x=x_bar_g, y=y_bar_g, name='1st Place', marker=dict(color='yellow'),
+                         orientation='h')
+        data_silver = dict(type='bar', x=x_bar_s, y=y_bar_s, name='2nd Place ', marker=dict(color='gray'),
+                           orientation='h')
+        data_bronze = dict(type='bar', x=x_bar_b, y=y_bar_b, name='3rd Place', marker=dict(color='brown'),
+                           orientation='h')
+
+        data = [data_gold, data_silver, data_bronze]
+        bar_data = []
+
+        bar_data.append(data)
+
+        bar_layout = dict(xaxis=dict(title='Count'),
+                          yaxis=dict(title='NOC')
+                          )
+        fig = go.Figure(data=data, layout=bar_layout)
+
+        fig.update_traces(marker_line_width=1.0, opacity=1)
+        fig.update_layout(barmode='stack', legend={'traceorder': 'normal'})
+        fig.update_xaxes(dtick=1)
+
+        return fig
+
+    else:
+        return {
+            "layout": {
+                "xaxis": {
+                    "visible": False
+                },
+                "yaxis": {
+                    "visible": False
+                },
+                "annotations": [
+                    {
+                        "text": "No Olympic Games disputed this year",
+                        "xref": "paper",
+                        "yref": "paper",
+                        "showarrow": False,
+                        "font": {
+                            "size": 28
+                        }
+                    }
+                ]
+            }
+        }
+
+
+
+
+
+
+
+
+
+## Gráfico João
 
 @app.callback(
         Output('graph', 'figure'),
@@ -311,6 +476,7 @@ def build_graph(value,drop_continent):
             plot_bgcolor='rgba(0,0,0,0)' )
         return fig_choropleth2
 
+## Gráfico Danilo
 
 @app.callback(
     [
@@ -395,19 +561,19 @@ def callback_1(input_value, input_value2):
             text="World War II", x=1939 + ((1945 - 1939) / 2), y=aux_y1, arrowhead=1, showarrow=True
         )
     if input_value == "Summer":
-        comment = [''' During the world war I and II the olimpics were  
+        comment = [''' During the world war I and II the olympics were  
                     canceled (1916, 1940, 1944).
                    '''
                    ]
         if input_value2 == "Event":
             comment = [''' 
-            During the world war I and II the olimpics were canceled (1916, 1940, 1944). \n
+            During the world war I and II the olympics were canceled (1916, 1940, 1944). \n
             Tendency of increase the number of events over the years.
             '''
                        ]
         if input_value2 == "NOC":
             comment = [''' 
-            During the world war I and II the olimpics were canceled (1916, 1940, 1944). \n
+            During the world war I and II the olympics were canceled (1916, 1940, 1944). \n
             Tendency of increase the number of nations over the years but in 1976 and 1980 decreases because:\n
             **1976:** In protest against the ongoing All Blacks tour of apartheid-era South Africa, the African 
             nations demanded that the exclusion of New Zealand from Olympics. After the IOCs refusal, 28 nations
@@ -426,8 +592,8 @@ def callback_1(input_value, input_value2):
 
         if input_value2 == "Name":
             comment = ['''
-            During the world war I and II the olimpics were canceled (1916, 1940, 1944). \n
-            Tendency of increase the number of atlhets over the years but we observe that decrease in 4 years
+            During the world war I and II the olympics were canceled (1916, 1940, 1944). \n
+            Tendency of increase the number of athletes over the years but we observe that decrease in 4 years
             1932,1956, 1976 and 1980. \n
             **1932:** The poor participation was the result of the worldwide economic depression and the expense 
             of traveling to California. \n
@@ -460,9 +626,9 @@ def callback_1(input_value, input_value2):
 
         if input_value2 == "Sport":
             comment = ['''
-            During the world war I and II the olimpics were canceled (1916, 1940, 1944). \n
+            During the world war I and II the olympics were canceled (1916, 1940, 1944). \n
             Tendency of increase the number of sports starting after world war II. \n
-            In the begining of the Olimpics games we can se a high variation of sports some of the the old
+            In the beginning of the Olympics games we can se a high variation of sports some of the the old
             sports disappeared completely from the Olympic schedule such as: Tug of War, Ballooning, Korfball,
             pelota and live pigeon shooting.
             '''
@@ -476,7 +642,7 @@ def callback_1(input_value, input_value2):
         ),
 
         comment =  ['''
-        During the world war II the olimpics were canceled (1940, 1944).    \n
+        During the world war II the olympics were canceled (1940, 1944).    \n
         Tendency of increase over the years.         \n   
         The Winter and Summer Olympic Games were held in the same years until 1992,
         after a 1986 decision by the International Olympic Committee (IOC) to place the 
