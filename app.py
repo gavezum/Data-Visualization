@@ -604,7 +604,7 @@ def callback_1(input_value, input_value2):
             comment = ['''
             During the world war I and II the olympics were canceled (1916, 1940, 1944). \n
             Tendency of increase the number of athletes over the years but we observe that decrease in 4 years
-            1932,1956, 1976 and 1980. \n
+            1932,1956 and 1980. \n
             **1932:** The poor participation was the result of the worldwide economic depression and the expense 
             of traveling to California. \n
             **1956:** were affected by a number of boycotts due to the Suez Crisis (Egypt, Iraq, Lebanon - out), 
